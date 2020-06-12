@@ -1,0 +1,37 @@
+<!-- This file contains the response that the Harmony Hub will receive when asking Harmony Span what kind of Roku device it is. -->
+<!-- Change the serial number if you're running more than one instance of Harmony Span so each one has a unique serial. -->
+<!-- We have no idea if this changes anything but it can't hurt, right? -->
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+<specVersion>
+    <major>1</major>
+    <minor>0</minor>
+</specVersion>
+<device>
+    <deviceType>urn:roku-com:device:player:1-0</deviceType>
+    <friendlyName>Harmony Span</friendlyName>
+    <manufacturer>Logan Lowe</manufacturer>
+    <manufacturerURL>http://www.github.com/ashifter/</manufacturerURL>
+    <modelDescription>Harmony Span Node.JS Service</modelDescription>
+    <modelName>Harmony Span</modelName>
+    <modelNumber>Ver. 1.0</modelNumber>
+    <modelURL>http://www.github.com/ashifter/</modelURL>
+    <serialNumber>FREEDOM1</serialNumber>
+    <UDN>uuid:00000000-1337-0000-1337-000000000000</UDN>
+        <serviceList>
+            <service>
+                <serviceType>urn:roku-com:service:ecp:1</serviceType>
+                <serviceId>urn:roku-com:serviceId:ecp1-0</serviceId>
+                <controlURL/>
+                <eventSubURL/>
+                <SCPDURL>ecp_SCPD.xml</SCPDURL>
+            </service>
+            <service>
+                <serviceType>urn:dial-multiscreen-org:service:dial:1</serviceType>
+                <serviceId>urn:dial-multiscreen-org:serviceId:dial1-0</serviceId>
+                <controlURL/>
+                <eventSubURL/>
+                <SCPDURL>dial_SCPD.xml</SCPDURL>
+            </service>
+        </serviceList>
+    </device>
+</root>
