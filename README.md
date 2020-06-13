@@ -9,7 +9,7 @@ Connect your Harmony Remote to your PC running the MyHarmony Software and scan f
 
 ![MyHarmony Desktop Software, Scan for devices](https://i.imgur.com/GCnIPTr.png)
 
-a Roku device with the serial number HARMONY-FREEDOM should appear - this is your HarmonySpan server. Add it to your remote and **make sure you sync over USB.**
+a Roku device with the serial number HARMONY-FREEDOM should appear - this is your HarmonySpan server. Add it to your remote and **make sure you sync over USB.** After this step, you can sync wirelessly. You only need to sync over USB when you're initally adding HarmonySpan.
 
 ![MyHarmony Desktop Software, Harmony Span appearing](https://i.imgur.com/xSCdwNI.png)
 
