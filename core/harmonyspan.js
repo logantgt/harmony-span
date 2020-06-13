@@ -1,4 +1,4 @@
-/// Import Modules ///
+           /// Import Modules ///
 const WebHooks = require('node-webhooks');
 const fs = require('fs');
 const Express = require('express');
@@ -100,7 +100,7 @@ app.post('/keypress/Left', function (req, res)
 app.post('/keypress/Right', function (req, res)
 {
     console.log( "[Pressed] Right" );
-    webHooks.trigger('Up', JSON.parse("{\""+btns.Up.label +"\":\""+btns.Up.data+"\"}"), {header:"Content-Type: application/json"});
+    webHooks.trigger('Right', JSON.parse("{\""+btns.Right.label +"\":\""+btns.Right.data+"\"}"), {header:"Content-Type: application/json"});
     res.end();
 })
 
