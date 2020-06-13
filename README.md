@@ -6,11 +6,17 @@ Have your Harmony Remote, a MicroUSB cable, and the MyHarmony desktop software r
 Clone/download this repository to get started. Make sure you have Node.JS installed on the target machine (preferrably the latest LTS release) and install dependencies (``npm i``). Edit the ``config.json`` file and put in your machine's local IP  in the ``ip`` field (ex. ``192.168.0.127``) and run HarmonySpan (``npm start`` from the root directory). The SSDP server will start on the IP provided in ``config.json``.
 
 Connect your Harmony Remote to your PC running the MyHarmony Software and scan for SSDP devices;
+
 ![MyHarmony Desktop Software, Scan for devices](https://i.imgur.com/GCnIPTr.png)
+
 a Roku device with the serial number HARMONY-FREEDOM should appear - this is your HarmonySpan server. Add it to your remote and **make sure you sync over USB.**
+
 ![MyHarmony Desktop Software, Harmony Span appearing](https://i.imgur.com/xSCdwNI.png)
+
 Unplug your remote and go to the Devices menu. HarmonySpan should appear - enter the HarmonySpan device and try pressing some buttons. You should see feedback in the terminal showing what buttons you're pressing.
+
 ![Terminal Feedback from HarmonySpan](https://i.imgur.com/zPqd60M.png)
+
 Stop HarmonySpan (``CTRL+C``) and open the ``config.json`` file again. There's a webhook definition for each virtual 'button' that HarmonySpan is watching - these relate to the buttons you see being pressed in your terminal.
 
 For simple IFTTT webhooks, just paste the webhook URL in the URL field for each button you want to attach to a webhook (don't make changes to the ``header`` or ``query`` values), save, and start HarmonySpan again. Every time HarmonySpan sees the button that you attached a webhook to getting pressed, it will trigger that webhook.
