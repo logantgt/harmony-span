@@ -1,9 +1,10 @@
 const Server = require('node-ssdp').Server;
+const colorout = require("./coreoutput");
 const fs = require('fs');
 
 module.exports.run = async () =>
 {
-    var ip = JSON.parse(fs.readFileSync('../config.json', 'utf8')).ip;
+    var ip = JSON.parse(fs.readFileSync('config.json', 'utf8')).ip;
     ssdp = new Server
     ({
         "location":"http://" + ip + ":8060/",
@@ -13,11 +14,12 @@ module.exports.run = async () =>
 
     if(ip == "xxx.xxx.xxx.xxx")
     {
-        console.log("Please set your machine's local IPv4 address in config.json! Cannot start SSDP server.");
+        colorout.Log("error", "Please set your machine's local IPv4 address in config.json! Cannot start SSDP server.");
         process.exit();
-    }else
+    }
+    else
     {
-        console.log("SSDP server running at " + ip + "");
+        colorout.Log("success", "SSDP server running at " + ip + "!");
     }
     
     ssdp.addUSN("roku:ecp");

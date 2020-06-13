@@ -1,14 +1,14 @@
 {
   "name": "harmonyspan",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Control anything with your Logitech Harmony Hub.",
-  "main": "harmonyspan.js",
+  "main": "harmony-span.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node core/harmony-span.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ashifter/harmonyspan.git"
+    "url": "git+https://github.com/ashifter/harmony-span.git"
   },
   "keywords": [
     "harmony",
@@ -22,13 +22,13 @@
   "author": "Logan Lowe",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ashifter/harmonyspan/issues"
+    "url": "https://github.com/ashifter/harmony-span/issues"
   },
-  "homepage": "https://github.com/ashifter/harmonyspan#readme",
+  "homepage": "https://github.com/ashifter/harmony-span#readme",
   "dependencies": {
+    "colors": "^1.4.0",
     "express": "^4.17.1",
     "node-ssdp": "^4.0.0",
-    "node-webhooks": "^1.4.2",
-    "request": "^2.88.2"
+    "node-webhooks": "^1.4.2"
   }
 }

@@ -1,6 +1,5 @@
 <!-- This file contains the response that the Harmony Hub will receive when asking Harmony Span what kind of Roku device it is. -->
-<!-- Change the serial number if you're running more than one instance of Harmony Span so each one has a unique serial. -->
-<!-- We have no idea if this changes anything but it can't hurt, right? -->
+<!-- You shouldn't have to change anything in here and we have absolutely no idea what will happen if you do mess around in here, so don't! :^) -->
 <root xmlns="urn:schemas-upnp-org:device-1-0">
 <specVersion>
     <major>1</major>
@@ -8,14 +7,14 @@
 </specVersion>
 <device>
     <deviceType>urn:roku-com:device:player:1-0</deviceType>
-    <friendlyName>Harmony Span</friendlyName>
+    <friendlyName>HarmonySpan</friendlyName>
     <manufacturer>Logan Lowe</manufacturer>
-    <manufacturerURL>http://www.github.com/ashifter/</manufacturerURL>
-    <modelDescription>Harmony Span Node.JS Service</modelDescription>
-    <modelName>Harmony Span</modelName>
+    <manufacturerURL>http://www.github.com/ashifter/harmony-span/</manufacturerURL>
+    <modelDescription>HarmonySpan Node.JS Service</modelDescription>
+    <modelName>HarmonySpan</modelName>
     <modelNumber>Ver. 1.0</modelNumber>
-    <modelURL>http://www.github.com/ashifter/</modelURL>
-    <serialNumber>FREEDOM1</serialNumber>
+    <modelURL>http://www.github.com/ashifter/harmony-span/</modelURL>
+    <serialNumber>HARMONY-FREEDOM</serialNumber>
     <UDN>uuid:00000000-1337-0000-1337-000000000000</UDN>
         <serviceList>
             <service>
@@ -24,13 +23,6 @@
                 <controlURL/>
                 <eventSubURL/>
                 <SCPDURL>ecp_SCPD.xml</SCPDURL>
-            </service>
-            <service>
-                <serviceType>urn:dial-multiscreen-org:service:dial:1</serviceType>
-                <serviceId>urn:dial-multiscreen-org:serviceId:dial1-0</serviceId>
-                <controlURL/>
-                <eventSubURL/>
-                <SCPDURL>dial_SCPD.xml</SCPDURL>
             </service>
         </serviceList>
     </device>
