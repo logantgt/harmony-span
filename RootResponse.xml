@@ -1,29 +1,13 @@
 <!-- This file contains the response that the Harmony Hub will receive when asking Harmony Span what kind of Roku device it is. -->
-<!-- You shouldn't have to change anything in here and we have absolutely no idea what will happen if you do mess around in here, so don't! :^) -->
+<!-- You shouldn't have to change anything in here (other than the UUID if you have multiple HarmonySpan instances on the network (?)) --> 
+<!-- and we have absolutely no idea what will happen if you do mess around in here, so don't! :^) -->
 <root xmlns="urn:schemas-upnp-org:device-1-0">
-<specVersion>
-    <major>1</major>
-    <minor>0</minor>
-</specVersion>
 <device>
-    <deviceType>urn:roku-com:device:player:1-0</deviceType>
-    <friendlyName>HarmonySpan</friendlyName>
+    <friendlyName>Webhook Bridge</friendlyName>
     <manufacturer>Logan Lowe</manufacturer>
     <manufacturerURL>http://www.github.com/ashifter/harmony-span/</manufacturerURL>
-    <modelDescription>HarmonySpan Node.JS Service</modelDescription>
     <modelName>HarmonySpan</modelName>
-    <modelNumber>Ver. 1.0</modelNumber>
-    <modelURL>http://www.github.com/ashifter/harmony-span/</modelURL>
     <serialNumber>HARMONY-FREEDOM</serialNumber>
     <UDN>uuid:00000000-1337-0000-1337-000000000000</UDN>
-        <serviceList>
-            <service>
-                <serviceType>urn:roku-com:service:ecp:1</serviceType>
-                <serviceId>urn:roku-com:serviceId:ecp1-0</serviceId>
-                <controlURL/>
-                <eventSubURL/>
-                <SCPDURL>ecp_SCPD.xml</SCPDURL>
-            </service>
-        </serviceList>
     </device>
 </root>
