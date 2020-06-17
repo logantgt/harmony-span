@@ -35,4 +35,5 @@ Logitech allows you to control 'IP devices' over your local network (think Roku,
 HarmonySpan broadcasts SSDP messages as if it were a Roku device with External Control Protocol (ECP) support - this is how it's possible to add HarmonySpan to your Harmony Hub. The Harmony Hub sends ECP commands to a regular Roku to control it - but in HarmonySpan, we take those ECP commands, watch when they're triggered, and in turn trigger a webhook. This solution doesn't require a bluetooth keyboard or any special hardware emulation - we're talking over HTTP the whole way.
 
 ## See it in action
-TwoGuyzTech // Control ANYTHING with your Logitech Harmony remote! | Trigger Webhooks from Sequences // https://www.youtube.com/watch?v=W59Ae5jUl2w
+TwoGuyzTech // Control ANYTHING with your Logitech Harmony remote! | Trigger Webhooks from Sequences
+https://www.youtube.com/watch?v=W59Ae5jUl2w
