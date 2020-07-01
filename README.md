@@ -37,3 +37,6 @@ HarmonySpan broadcasts SSDP messages as if it were a Roku device with External C
 ## See it in action
 TwoGuyzTech // Control ANYTHING with your Logitech Harmony remote! | Trigger Webhooks from Sequences
 https://www.youtube.com/watch?v=W59Ae5jUl2w
+
+Build Montage // DIM & BRIGHTEN Your Cinema Lights With PAUSE & PLAY In Your Home Theater!
+https://www.youtube.com/watch?v=Gqjma5_ZAYo
