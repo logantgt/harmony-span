@@ -1,13 +1,13 @@
 const Server = require('node-ssdp').Server;
 const colorout = require("./coreoutput");
 const fs = require('fs');
+var ip = require("ip");
 
 module.exports.run = async () =>
 {
-    var ip = JSON.parse(fs.readFileSync('config.json', 'utf8')).ip;
     ssdp = new Server
     ({
-        "location":"http://localhost:8060/",
+        "location":"http://"+ ip.address() +":8060/",
         "udn":"uuid:roku:ecp:HARMONYSPAN",
         "ssdpSig":'Server: Roku/9.3.0 UPnP/1.0 Roku/9.3.0'
     });
@@ -16,7 +16,7 @@ module.exports.run = async () =>
     
     ssdp.start();
     
-    colorout.Log("success", "SSDP server running on localhost!");
+    colorout.Log("success", "SSDP server running on "+ ip.address() +"!");
 
     process.on('exit', function()
     {
