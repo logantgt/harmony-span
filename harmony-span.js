@@ -12,6 +12,8 @@ webHooks = new WebHooks({db:{"": ["http://localhost:8060/"]}});
 
 var btns = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
+var responses = [];
+
 webHooks.add('Home', btns.Home.url);
 webHooks.add('Rev', btns.Rev.url);
 webHooks.add('Fwd', btns.Fwd.url);
@@ -32,7 +34,11 @@ ssdp.run();
 
 app.get('/', function (req, res)
 {
-    colorout.Log("info", req.ip + " found me! Sending RootResponse.xml..." );
+    if(!responses.includes(req.ip))
+    {
+        responses.push(req.ip);
+        colorout.Log("info", req.ip + " found me! Sending RootResponse.xml..." );
+    }
     res.type('application/xml');
     res.send(fs.readFileSync('RootResponse.xml', 'utf8'));
     res.end();
