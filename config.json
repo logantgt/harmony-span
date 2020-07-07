@@ -2,90 +2,105 @@
     "Home":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Rev":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Fwd":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Play":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Select":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Up":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Down":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Left":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Right":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Back":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "InstantReplay":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Info":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Backspace":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Search":   
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     },
     "Enter":
     {
         "url":"http://localhost/",
+        "requesttype":"POST",
         "header":"{}",
         "query":"{}"
     }
