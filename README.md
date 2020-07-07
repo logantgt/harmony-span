@@ -7,7 +7,9 @@ https://github.com/AShifter/harmony-span/wiki
 ## Quick Setup
 Have your Harmony Remote, a MicroUSB cable, and the MyHarmony desktop software ready, as well as a plaintext editor of your choice (notepad works fine here).
 
-Clone/download this repository to get started. Make sure you have Node.JS installed on the target machine (preferrably the latest LTS release) and install dependencies (``npm i``). Edit the ``config.json`` file and put in your machine's local IP  in the ``ip`` field (ex. ``192.168.0.127``) and run HarmonySpan (``npm start`` from the root directory). The SSDP server will start on the IP provided in ``config.json``.
+Download the latest binaries for your platform (HarmonySpan currently has pre-built binaries for Windows, macOS, and Linux available at https://github.com/AShifter/harmony-span/releases/).
+
+Run the executable you downloaded - if you get any popups asking for firewall permission in Windows, check both Private and Public networks permission. HarmonySpan will automatically find your first suitable network adapter.
 
 Connect your Harmony Remote to your PC running the MyHarmony Software and scan for SSDP devices;
 
