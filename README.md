@@ -8,7 +8,7 @@ Download the latest binaries for your platform (HarmonySpan currently has pre-bu
 
 Run the executable you downloaded - if you get any popups asking for firewall permission in Windows, check both Private and Public networks permission. HarmonySpan will automatically find your first suitable network adapter.
 
-Connect your Harmony Remote to your PC running the MyHarmony Software and scan for SSDP devices;
+Connect your Harmony Remote (or Hub if you don't have a remote with a MicroUSB port, like a Companion remote) to your PC running the MyHarmony Software and scan for SSDP devices;
 
 ![MyHarmony Desktop Software, Scan for devices](https://i.imgur.com/GCnIPTr.png)
 
