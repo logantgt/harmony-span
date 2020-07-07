@@ -1,9 +1,6 @@
 # HarmonySpan
 a Node.JS application that allows you to trigger webhooks directly from a Logitech Harmony Hub and compatible remote.
 
-**Note - We're still working on the Wiki! There you'll find in-depth guides to get HarmonySpan working on your device/platform and good ideas on how to integrate HarmonySpan effectively with your remote. Find the wiki here;**
-https://github.com/AShifter/harmony-span/wiki
-
 ## Quick Setup
 Have your Harmony Remote, a MicroUSB cable, and the MyHarmony desktop software ready, as well as a plaintext editor of your choice (notepad works fine here).
 
