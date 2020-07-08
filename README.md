@@ -1,7 +1,7 @@
 # HarmonySpan
 a Node.JS application that allows you to trigger webhooks directly from a Logitech Harmony Hub and compatible remote.
 
-Have you found HarmonySpan useful? Go ahead and buy me a Ko-fi;
+Have you found HarmonySpan useful? Go ahead and buy me a coffee;
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A61WGUQ)
 
