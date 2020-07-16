@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HarmonySpan Configuration Utility</title>
+        <style>
+            body
+            {
+                font-family: sans-serif;
+                font-size: 14pt;
+                background-color: #222222;
+            }
+            label
+            {
+                font-family: sans-serif;
+                font-size: 10pt;
+                font-style: italic;
+                padding-right: 10px;
+            }
+            .navbar
+            {
+                margin: 0.5%;
+                margin-left: 15%;
+                margin-right: 15%;
+                padding: 0.5%;
+                padding-left: 2%;
+                background-color: lightgrey;
+                border-radius: 25px;
+            }
+            .configpane
+            {
+                margin: 0.5%;
+                margin-left: 15%;
+                margin-right: 15%;
+                padding: 0.5%;
+                padding-left: 2%;
+                background-color: lightgrey;
+                border-radius: 25px;
+                display: block;
+                text-align:center;
+            }
+            button
+            {
+                background-color:#44c767;
+	            border-radius:28px;
+	            border:0px solid black;
+	            display:inline-block;
+	            cursor:pointer;
+	            color:#ffffff;
+	            padding:5px;
+            }
+            .rounded
+            {
+                background-color:white;
+	            border-radius:28px;
+	            border:0px solid black;
+	            display:inline-block;
+	            padding:5px;
+            }
+            .rounded:active
+            {
+                border:0px solid black;
+            }
+        </style>
+    <script>
+        let d = new Date();
+        alert("Today's date is " + d);
+    </script>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="https://github.com/AShifter/harmony-span"><h5 id="test3">HarmonySpan Configuration Utility</h5></a>
+        </div>
+        <div class="configpane">
+            <label type="text" for="makerurl">IFTTT Maker URL</label>
+            <br>
+            <input class="rounded" type="text" id="makerurl" size="75"></input>
+            <br>
+            <br>
+            <button type="button" id="submitMakerURL" onclick="test()">Save IFTTT URL</button>
+        </div>
+        <div class="configpane">
+            <label type="select" for="buttons">Currently editing HarmonySpan button;</label>
+            <br>
+            <select name="buttons" id="buttons" class="rounded">
+                <option value="Home">Home</option>
+                <option value="Rev">Rev</option>
+                <option value="Fwd">Fwd</option>
+                <option value="Play">Play</option>
+                <option value="Select">Select</option>
+                <option value="Up">Up</option>
+                <option value="Down">Down</option>
+                <option value="Left">Left</option>
+                <option value="Right">Right</option>
+                <option value="Back">Back</option>
+                <option value="InstantReplay">InstantReplay</option>
+                <option value="Info">Info</option>
+                <option value="Backspace">Backspace</option>
+                <option value="Search">Search</option>
+                <option value="Enter">Enter</option>
+            </select>
+        </div>
+        <div class="configpane">
+            <label type="text" for="webhookname">Webhook Name</label>
+            <br>
+            <input class="rounded" type="text" id="webhookname" size="75"></input>
+            <br>
+            <br>
+            <label type="text" for="webhookurl">Webhook URL</label>
+            <br>
+            <input class="rounded" type="text" id="webhookurl" size="75"></input>
+            <br>
+            <br>
+            <label type="text" for="webhookHeader">Webhook Header</label>
+            <br>
+            <input class="rounded" type="text" id="webhookHeader" size="75"></input>
+            <br>
+            <br>
+            <label type="text" for="webhookcontent">Webhook Content</label>
+            <br>
+            <input class="rounded" type="text" id="webhookcontent" size="75"></input>
+            <br>
+            <br>
+            <label type="select" for="webhookurl">Webhook Request Type</label>
+            <br>
+            <select name="requests" id="request_types" class="rounded">
+                <option value="POST">POST</option>
+                <option value="GET">GET</option>
+            </select>
+            <br>
+            <br>
+            <button type="button" id="submitConfig" onclick="test()">Submit Settings</button>
+        </div>
+    </body>
+</html>

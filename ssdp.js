@@ -18,6 +18,8 @@ module.exports.run = async () =>
     
     colorout.Log("success", "SSDP server running on "+ ip.address() +"!");
 
+    colorout.Log("info", "HarmonySpan's Configuration Menu is available at http://localhost:8060/config");
+
     process.on('exit', function()
     {
         ssdp.stop();

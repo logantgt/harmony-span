@@ -15,21 +15,21 @@ var btns = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 var responses = [];
 
-webHooks.add('Home', btns.Home.url);
-webHooks.add('Rev', btns.Rev.url);
-webHooks.add('Fwd', btns.Fwd.url);
-webHooks.add('Play', btns.Play.url);
-webHooks.add('Select', btns.Select.url);
-webHooks.add('Left', btns.Left.url);
-webHooks.add('Right', btns.Right.url);
-webHooks.add('Down', btns.Down.url);
-webHooks.add('Up', btns.Up.url);
-webHooks.add('Back', btns.Back.url);
-webHooks.add('InstantReplay', btns.InstantReplay.url);
-webHooks.add('Info', btns.Info.url);
-webHooks.add('Backspace', btns.Backspace.url);
-webHooks.add('Search', btns.Search.url);
-webHooks.add('Enter', btns.Home.url);
+webHooks.add('Home', btns.Buttons[0].url);
+webHooks.add('Rev', btns.Buttons[1].url);
+webHooks.add('Fwd', btns.Buttons[2].url);
+webHooks.add('Play', btns.Buttons[3].url);
+webHooks.add('Select', btns.Buttons[4].url);
+webHooks.add('Left', btns.Buttons[5].url);
+webHooks.add('Right', btns.Buttons[6].url);
+webHooks.add('Down', btns.Buttons[7].url);
+webHooks.add('Up', btns.Buttons[8].url);
+webHooks.add('Back', btns.Buttons[9].url);
+webHooks.add('InstantReplay', btns.Buttons[10].url);
+webHooks.add('Info', btns.Buttons[11].url);
+webHooks.add('Backspace', btns.Buttons[12].url);
+webHooks.add('Search', btns.Buttons[13].url);
+webHooks.add('Enter', btns.Buttons[14].url);
 
 request.shouldKeepAlive = false;
 
@@ -51,14 +51,14 @@ app.get('/', function (req, res)
 app.post('/keypress/Home', function (req, res)
 {
     colorout.Log("debug", "(HarmonySpan) got Home" );
-    if(btns.Home.requesttype == "POST")
+    if(btns.Buttons[0].requesttype == "POST")
     {
-        webHooks.trigger('Home', JSON.parse(btns.Home.query), JSON.parse(btns.Home.header));
+        webHooks.trigger('Home', JSON.parse(btns.Buttons[0].query), JSON.parse(btns.Buttons[0].header));
         res.end();
     }
     else if(btns.Home.requesttype == "GET")
     {
-        request(btns.Home.url, function (error, response, body)
+        request(btns.Buttons[0].url, function (error, response, body)
         {
             if(error != null)
             {
@@ -421,6 +421,29 @@ app.post('/keypress/Enter', function (req, res)
         });
         res.end();
     }
+})
+
+///
+/// HarmonySpan Configuration API
+///
+
+app.get('/config/config.json', function (req, res)
+{
+    res.sendFile(__dirname + '/config.json');
+})
+
+app.get('/config', function (req, res)
+{
+    res.sendFile(__dirname + '/config_utility/config.html');
+})
+
+app.get('/config/write', function(req, res)
+{
+    colorout.Log("warning", "Writing to configuration NOW! \nButton: " + req.query.btn + "\nLabel: " + req.query.lbl + "\nURL: " + req.query.url + "\nRequest Type: " + req.query.rqt + "\nRequest Header: " + req.query.hdr + "\nRequest Query: " + req.query.qry);
+    console.log(btns.Buttons[0])
+    //console.log(btns.find(x => x == req.query.btn))
+    //fs.writeFileSync()
+    res.status(200).end();
 })
 
 var webserver = app.listen(8060, function ()
