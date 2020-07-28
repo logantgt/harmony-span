@@ -38,7 +38,7 @@ For simple IFTTT webhooks, just paste the webhook URL in the URL field for each 
 
 You can also add a body and header to the request if you want to talk directly to the API for things like LIFX bulbs. The ``query`` string is sent as the request body, and ``header`` as the request header.
 
-At this point you can do whatever you want with the buttons - adding those buttons to a sequence in another activity is a great way to get started integrating more smart home functionality into your remote.
+At this point you can do whatever you want with the buttons - To make your lights turn on and off when you play and pause a movie, just add the HarmonySpan buttons that are linked to your 'lights on' and 'lights off' webhook URLs with the Pause and Play buttons on the activity you use to watch a movie. For more information, check Logitech's documentation on creating button sequences. https://support.myharmony.com/en-es/creating-button-sequences
 
 Click the Submit Settings button once you fill in all of the fields for the button you're working with. Switching buttons without submitting your changes will delete the new values you put in for the first button.
 
