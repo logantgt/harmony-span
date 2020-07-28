@@ -14,6 +14,8 @@ Download the latest binaries for your platform (HarmonySpan currently has pre-bu
 
 Run the executable you downloaded - if you get any popups asking for firewall permission in Windows, check both Private and Public networks permission. HarmonySpan will automatically find your first suitable network adapter.
 
+![Windows Defender Firewall Notification](https://i.imgur.com/Ty6YcHM.png)
+
 On Linux/macOS machines you might have to run `chmod +x` on the binary itself to enable the executable flag for that file.
 
 Connect your Harmony Remote (or Hub if you don't have a remote with a MicroUSB port, like a Companion remote) to your PC running the MyHarmony Software and scan for SSDP devices;
