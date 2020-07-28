@@ -11,30 +11,31 @@ const app = Express();
 
 webHooks = new WebHooks({db:{"": ["http://localhost:8060/"]}});
 
-var btns = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+var conf = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 var responses = [];
 
-webHooks.add('Home', btns.Buttons[0].url);
-webHooks.add('Rev', btns.Buttons[1].url);
-webHooks.add('Fwd', btns.Buttons[2].url);
-webHooks.add('Play', btns.Buttons[3].url);
-webHooks.add('Select', btns.Buttons[4].url);
-webHooks.add('Left', btns.Buttons[5].url);
-webHooks.add('Right', btns.Buttons[6].url);
-webHooks.add('Down', btns.Buttons[7].url);
-webHooks.add('Up', btns.Buttons[8].url);
-webHooks.add('Back', btns.Buttons[9].url);
-webHooks.add('InstantReplay', btns.Buttons[10].url);
-webHooks.add('Info', btns.Buttons[11].url);
-webHooks.add('Backspace', btns.Buttons[12].url);
-webHooks.add('Search', btns.Buttons[13].url);
-webHooks.add('Enter', btns.Buttons[14].url);
+webHooks.add('Home', conf.Buttons[0].url);
+webHooks.add('Rev', conf.Buttons[1].url);
+webHooks.add('Fwd', conf.Buttons[2].url);
+webHooks.add('Play', conf.Buttons[3].url);
+webHooks.add('Select', conf.Buttons[4].url);
+webHooks.add('Left', conf.Buttons[5].url);
+webHooks.add('Right', conf.Buttons[6].url);
+webHooks.add('Down', conf.Buttons[7].url);
+webHooks.add('Up', conf.Buttons[8].url);
+webHooks.add('Back', conf.Buttons[9].url);
+webHooks.add('InstantReplay', conf.Buttons[10].url);
+webHooks.add('Info', conf.Buttons[11].url);
+webHooks.add('Backspace', conf.Buttons[12].url);
+webHooks.add('Search', conf.Buttons[13].url);
+webHooks.add('Enter', conf.Buttons[14].url);
 
 request.shouldKeepAlive = false;
 
 ssdp.run();
 
+/// Send RootResponse.xml ///
 app.get('/', function (req, res)
 {
     if(!responses.includes(req.ip))
@@ -47,18 +48,17 @@ app.get('/', function (req, res)
     res.end();
 })
 
-/// Button Event Handlers ///
-app.post('/keypress/Home', function (req, res)
+/// Webhook Trigger ///
+function triggerWebhook(btnName, btnID)
 {
-    colorout.Log("debug", "(HarmonySpan) got Home" );
-    if(btns.Buttons[0].requesttype == "POST")
+    colorout.Log("debug", "[HarmonySpan] got " + btnName + " (" + conf.Buttons[btnID].requesttype + ": " + conf.Buttons[btnID].label + ")");
+    if(conf.Buttons[btnID].requesttype == "POST")
     {
-        webHooks.trigger('Home', JSON.parse(btns.Buttons[0].query), JSON.parse(btns.Buttons[0].header));
-        res.end();
+        webHooks.trigger(btnName, JSON.parse(conf.Buttons[btnID].query), JSON.parse(conf.Buttons[btnID].header));
     }
-    else if(btns.Home.requesttype == "GET")
+    else if(conf.Buttons[btnID].requesttype == "GET")
     {
-        request(btns.Buttons[0].url, function (error, response, body)
+        request(conf.Buttons[btnID].url, function (error, response, body)
         {
             if(error != null)
             {
@@ -69,358 +69,98 @@ app.post('/keypress/Home', function (req, res)
                 colorout.Log("warning", "HTTP GET: " + response.statusCode);
             }
         });
-        res.end();
     }
+}
+
+/// Button Event Handlers ///
+app.post('/keypress/Home', function (req, res)
+{
+    triggerWebhook('Home', 0);
+    res.end();
 })
 
 app.post('/keypress/Rev', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Rev" );
-    if(btns.Rev.requesttype == "POST")
-    {
-        webHooks.trigger('Rev', JSON.parse(btns.Rev.query), JSON.parse(btns.Rev.header));
-        res.end();
-    }
-    else if(btns.Rev.requesttype == "GET")
-    {
-        request(btns.Rev.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Rev', 1);
+    res.end();
 })
 
 app.post('/keypress/Fwd', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Fwd" );
-    if(btns.Fwd.requesttype == "POST")
-    {
-        webHooks.trigger('Fwd', JSON.parse(btns.Fwd.query), JSON.parse(btns.Fwd.header));
-        res.end();
-    }
-    else if(btns.Fwd.requesttype == "GET")
-    {
-        request(btns.Fwd.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Fwd', 2);
+    res.end();
 })
 
 app.post('/keypress/Play', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Play" );
-    if(btns.Play.requesttype == "POST")
-    {
-        webHooks.trigger('Play', JSON.parse(btns.Play.query), JSON.parse(btns.Play.header));
-        res.end();
-    }
-    else if(btns.Play.requesttype == "GET")
-    {
-        request(btns.Play.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Play', 3);
+    res.end();
 })
 
 app.post('/keypress/Select', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Select" );
-    if(btns.Select.requesttype == "POST")
-    {
-        webHooks.trigger('Select', JSON.parse(btns.Select.query), JSON.parse(btns.Select.header));
-        res.end();
-    }
-    else if(btns.Select.requesttype == "GET")
-    {
-        request(btns.Select.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Select', 4);
+    res.end();
 })
 
 app.post('/keypress/Up', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Up" );
-    if(btns.Up.requesttype == "POST")
-    {
-        webHooks.trigger('Up', JSON.parse(btns.Up.query), JSON.parse(btns.Up.header));
-        res.end();
-    }
-    else if(btns.Up.requesttype == "GET")
-    {
-        request(btns.Up.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Up', 5);
+    res.end();
 })
 
 app.post('/keypress/Down', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Down" );
-    if(btns.Down.requesttype == "POST")
-    {
-        webHooks.trigger('Down', JSON.parse(btns.Down.query), JSON.parse(btns.Down.header));
-        res.end();
-    }
-    else if(btns.Down.requesttype == "GET")
-    {
-        request(btns.Down.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Down', 6);
+    res.end();
 })
 
 app.post('/keypress/Left', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Left" );
-    if(btns.Left.requesttype == "POST")
-    {
-        webHooks.trigger('Left', JSON.parse(btns.Left.query), JSON.parse(btns.Left.header));
-        res.end();
-    }
-    else if(btns.Left.requesttype == "GET")
-    {
-        request(btns.Left.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Left', 7);
+    res.end();
 })
 
 app.post('/keypress/Right', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Right" );
-    if(btns.Right.requesttype == "POST")
-    {
-        webHooks.trigger('Right', JSON.parse(btns.Right.query), JSON.parse(btns.Right.header));
-        res.end();
-    }
-    else if(btns.Right.requesttype == "GET")
-    {
-        request(btns.Right.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Right', 8);
+    res.end();
 })
 
 app.post('/keypress/Back', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Back" );
-    if(btns.Back.requesttype == "POST")
-    {
-        webHooks.trigger('Back', JSON.parse(btns.Back.query), JSON.parse(btns.Back.header));
-        res.end();
-    }
-    else if(btns.Back.requesttype == "GET")
-    {
-        request(btns.Back.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Back', 9);
+    res.end();
 })
 
 app.post('/keypress/InstantReplay', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got InstantReplay" );
-    if(btns.InstantReplay.requesttype == "POST")
-    {
-        webHooks.trigger('InstantReplay', JSON.parse(btns.InstantReplay.query), JSON.parse(btns.InstantReplay.header));
-        res.end();
-    }
-    else if(btns.InstantReplay.requesttype == "GET")
-    {
-        request(btns.InstantReplay.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('InstantReplay', 10);
+    res.end();
 })
 
 app.post('/keypress/Info', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Info" );
-    if(btns.Info.requesttype == "POST")
-    {
-        webHooks.trigger('Info', JSON.parse(btns.Info.query), JSON.parse(btns.Info.header));
-        res.end();
-    }
-    else if(btns.Info.requesttype == "GET")
-    {
-        request(btns.Info.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Info', 11);
+    res.end();
 })
 
 app.post('/keypress/Backspace', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Backspace" );
-    if(btns.Backspace.requesttype == "POST")
-    {
-        webHooks.trigger('Backspace', JSON.parse(btns.Backspace.query), JSON.parse(btns.Backspace.header));
-        res.end();
-    }
-    else if(btns.Backspace.requesttype == "GET")
-    {
-        request(btns.Backspace.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Backspace', 12);
+    res.end();
 })
 
 app.post('/keypress/Search', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Search" );
-    if(btns.Search.requesttype == "POST")
-    {
-        webHooks.trigger('Search', JSON.parse(btns.Search.query), JSON.parse(btns.Search.header));
-        res.end();
-    }
-    else if(btns.Search.requesttype == "GET")
-    {
-        request(btns.Search.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Search', 13);
+    res.end();
 })
 
 app.post('/keypress/Enter', function (req, res)
 {
-    colorout.Log("debug", "(HarmonySpan) got Enter" );
-    if(btns.Enter.requesttype == "POST")
-    {
-        webHooks.trigger('Enter', JSON.parse(btns.Enter.query), JSON.parse(btns.Enter.header));
-        res.end();
-    }
-    else if(btns.Enter.requesttype == "GET")
-    {
-        request(btns.Enter.url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
-        res.end();
-    }
+    triggerWebhook('Enter', 14);
+    res.end();
 })
 
 ///
@@ -437,12 +177,23 @@ app.get('/config', function (req, res)
     res.sendFile(__dirname + '/config_utility/config.html');
 })
 
-app.get('/config/write', function(req, res)
+app.get('/config/write/btn', function(req, res)
 {
     colorout.Log("warning", "Writing to configuration NOW! \nButton: " + req.query.btn + "\nLabel: " + req.query.lbl + "\nURL: " + req.query.url + "\nRequest Type: " + req.query.rqt + "\nRequest Header: " + req.query.hdr + "\nRequest Query: " + req.query.qry);
-    console.log(btns.Buttons[0])
-    //console.log(btns.find(x => x == req.query.btn))
-    //fs.writeFileSync()
+    conf.Buttons[req.query.btn].label = req.query.lbl;
+    conf.Buttons[req.query.btn].url = req.query.url;
+    conf.Buttons[req.query.btn].requesttype = req.query.rqt;
+    conf.Buttons[req.query.btn].header = req.query.hdr;
+    conf.Buttons[req.query.btn].query = req.query.qry;
+    fs.writeFileSync("config.json", JSON.stringify(conf));
+    res.status(200).end();
+})
+
+app.get('/config/write/ifttt', function(req, res)
+{
+    colorout.Log("warning", "Writing to configuration NOW! \nIFTTT URL: " + req.query.ifttt);
+    conf.maker_url = req.query.ifttt;
+    fs.writeFileSync("config.json", JSON.stringify(conf));
     res.status(200).end();
 })
 

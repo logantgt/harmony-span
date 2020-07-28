@@ -38,7 +38,7 @@
                 display: block;
                 text-align:center;
             }
-            button
+            .button
             {
                 background-color:#44c767;
 	            border-radius:28px;
@@ -61,27 +61,66 @@
                 border:0px solid black;
             }
         </style>
-    <script>
-        let d = new Date();
-        alert("Today's date is " + d);
-    </script>
+        <script>
+            var getJSON = function(url, callback)
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.responseType = 'json';
+                xhr.onload = function()
+                {
+                    var status = xhr.status;
+                    if (status === 200)
+                    {
+                        callback(null, xhr.response);
+                    }
+                    else
+                    {
+                        callback(status, xhr.response);
+                    }
+                };
+                xhr.send();
+            };
+
+            function updateValues()
+            {
+                getJSON("http://localhost:8060/config/config.json", function(err, data)
+                {
+                    document.getElementById("webhookname").value = data.Buttons[document.getElementById("buttons").selectedIndex].label;
+                    document.getElementById("webhookurl").value = data.Buttons[document.getElementById("buttons").selectedIndex].url;
+                    document.getElementById("webhookheader").value = data.Buttons[document.getElementById("buttons").selectedIndex].header;
+                    document.getElementById("webhookcontent").value = data.Buttons[document.getElementById("buttons").selectedIndex].query;
+                    document.getElementById("requesttypes").value = data.Buttons[document.getElementById("buttons").selectedIndex].requesttype;
+                })
+            }
+
+            function submitButtons()
+            {
+                writeConfig("http://localhost:8060/config/write/btn?btn=" + document.getElementById("buttons").selectedIndex + "&lbl=" + document.getElementById("webhookname").value + "&url=" + document.getElementById("webhookurl").value + "&rqt=" + document.getElementById("requesttypes").value + "&hdr=" + document.getElementById("webhookheader").value + "&qry=" + document.getElementById("webhookcontent").value);
+            }
+
+            function writeConfig(url)
+            {
+                requestWindow = window.open(url, "", "width=1,height=1");
+                setTimeout(() => {  requestWindow.close(); }, 1000);
+            }
+        </script>
     </head>
-    <body>
+    <body onload="updateValues()">
         <div class="navbar">
-            <a href="https://github.com/AShifter/harmony-span"><h5 id="test3">HarmonySpan Configuration Utility</h5></a>
-        </div>
-        <div class="configpane">
-            <label type="text" for="makerurl">IFTTT Maker URL</label>
+            <a href="https://github.com/AShifter/harmony-span"><h5 style="margin-bottom: 0px;">HarmonySpan Configuration Utility</h5></a>
+            <label type="text" for="version">HarmonySpan v1.3</label>
+            <label type="text" for="version">//</label>
+            <label type="text" for="version">Built by Logan Lowe</label>
+            <label type="text" for="version">//</label>
+            <label type="text" for="version">Huge thanks to <b>Matt Ording</b>, <a href="https://www.youtube.com/c/buildmontage"><b>Tony James</b></a>, and the entire <b>Home Theater community</b> for making this project possible!</label>
             <br>
-            <input class="rounded" type="text" id="makerurl" size="75"></input>
             <br>
-            <br>
-            <button type="button" id="submitMakerURL" onclick="test()">Save IFTTT URL</button>
         </div>
         <div class="configpane">
             <label type="select" for="buttons">Currently editing HarmonySpan button;</label>
             <br>
-            <select name="buttons" id="buttons" class="rounded">
+            <select name="buttons" id="buttons" onChange="updateValues()" class="rounded">
                 <option value="Home">Home</option>
                 <option value="Rev">Rev</option>
                 <option value="Fwd">Fwd</option>
@@ -110,9 +149,9 @@
             <input class="rounded" type="text" id="webhookurl" size="75"></input>
             <br>
             <br>
-            <label type="text" for="webhookHeader">Webhook Header</label>
+            <label type="text" for="webhookheader">Webhook Header</label>
             <br>
-            <input class="rounded" type="text" id="webhookHeader" size="75"></input>
+            <input class="rounded" type="text" id="webhookheader" size="75"></input>
             <br>
             <br>
             <label type="text" for="webhookcontent">Webhook Content</label>
@@ -120,15 +159,15 @@
             <input class="rounded" type="text" id="webhookcontent" size="75"></input>
             <br>
             <br>
-            <label type="select" for="webhookurl">Webhook Request Type</label>
+            <label type="select" for="requesttypes">Webhook Request Type</label>
             <br>
-            <select name="requests" id="request_types" class="rounded">
+            <select name="requests" id="requesttypes" class="rounded">
                 <option value="POST">POST</option>
                 <option value="GET">GET</option>
             </select>
             <br>
             <br>
-            <button type="button" id="submitConfig" onclick="test()">Submit Settings</button>
+            <input type="button" class="button" value="Submit Settings" onclick="submitButtons()"/>
         </div>
     </body>
 </html>
