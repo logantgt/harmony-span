@@ -8,7 +8,7 @@ Have you found HarmonySpan useful? Go ahead and buy me a coffee;
 Thanks for your support!
 
 ## Quick Setup
-Have your Harmony Remote, a MicroUSB cable, and the MyHarmony desktop software ready, as well as a plaintext editor of your choice (notepad works fine here).
+Have your Harmony Remote (or Hub), a MicroUSB cable, and the MyHarmony desktop software ready. **Compatibility issues are currently being investigated with the Mobile app. Your mileage may vary.**
 
 Download the latest binaries for your platform (HarmonySpan currently has pre-built binaries for Windows, macOS, and Linux available at https://github.com/AShifter/harmony-span/releases/).
 
@@ -16,9 +16,9 @@ Run the executable you downloaded - if you get any popups asking for firewall pe
 
 ![Windows Defender Firewall Notification](https://i.imgur.com/Ty6YcHM.png)
 
-On Linux/macOS machines you might have to run `chmod +x` on the binary itself to enable the executable flag for that file.
+On Linux/macOS machines you might have to run `chmod +x ./HarmonySpan_<PLATFORM>_x64` on the binary itself to enable the executable flag for that file.
 
-Connect your Harmony Remote (or Hub if you don't have a remote with a MicroUSB port, like a Companion remote) to your PC running the MyHarmony Software and scan for SSDP devices;
+Connect your Harmony Remote (or Hub if you don't have a remote with a MicroUSB port, like the Companion or Smart Control remotes) to your PC running the MyHarmony Software and scan for SSDP devices;
 
 ![MyHarmony Desktop Software, Scan for devices](https://i.imgur.com/GCnIPTr.png)
 
@@ -30,13 +30,17 @@ Unplug your remote and go to the Devices menu. HarmonySpan should appear - enter
 
 ![Terminal Feedback from HarmonySpan](https://i.imgur.com/zPqd60M.png)
 
-Stop HarmonySpan (``CTRL+C``) and open the ``config.json`` file again. There's a webhook definition for each virtual 'button' that HarmonySpan is watching - these relate to the buttons you see being pressed in your terminal.
+Navigate to the [HarmonySpan Configuration Utility page](http://localhost:8060/config) on your local network to start setting up HarmonySpan.
+
+![HarmonySpan Configuration Utility](https://i.imgur.com/sdE7S6h.png)
 
 For simple IFTTT webhooks, just paste the webhook URL in the URL field for each button you want to attach to a webhook (don't make changes to the ``header`` or ``query`` values), save, and start HarmonySpan again. Every time HarmonySpan sees the button that you attached a webhook to getting pressed, it will trigger that webhook.
 
 You can also add a body and header to the request if you want to talk directly to the API for things like LIFX bulbs. The ``query`` string is sent as the request body, and ``header`` as the request header.
 
 At this point you can do whatever you want with the buttons - adding those buttons to a sequence in another activity is a great way to get started integrating more smart home functionality into your remote.
+
+Click the Submit Settings button once you fill in all of the fields for the button you're working with. Switching buttons without submitting your changes will delete the new values you put in for the first button.
 
 ## How It Works
 Logitech allows you to control 'IP devices' over your local network (think Roku, NVIDIA SHIELD, Apple TV) rather than controlling them with IR. This works because each device broadcasts to a local Simple Service Discovery Protocol (SSDP) IP (``239.255.255.250``, chances are you can see traffic on it in your network with Wireshark) to let other devices in the network know that they can be controlled.
