@@ -7,7 +7,8 @@
             {
                 font-family: sans-serif;
                 font-size: 14pt;
-                background-color: #222222;
+                background-color: #151718;
+                color:#FFFFFF;
             }
             label
             {
@@ -23,7 +24,7 @@
                 margin-right: 15%;
                 padding: 0.5%;
                 padding-left: 2%;
-                background-color: lightgrey;
+                background-color: #2D3133;
                 border-radius: 25px;
             }
             .configpane
@@ -33,7 +34,7 @@
                 margin-right: 15%;
                 padding: 0.5%;
                 padding-left: 2%;
-                background-color: lightgrey;
+                background-color: #2D3133;
                 border-radius: 25px;
                 display: block;
                 text-align:center;
@@ -50,15 +51,30 @@
             }
             .rounded
             {
-                background-color:white;
+                background-color:#131516;
 	            border-radius:28px;
 	            border:0px solid black;
-	            display:inline-block;
+	            display:block;
+                margin-left: auto;
+                margin-right: auto;
 	            padding:5px;
+                color:#FFFFFF;
             }
             .rounded:active
             {
                 border:0px solid black;
+            }
+            a:link
+            {
+                color:#FFFFFF;
+            }
+            a:visited
+            {
+                color:#FFFFFF;
+            }
+            a:hover
+            {
+                color:#FFFFFF;
             }
         </style>
         <script>
@@ -104,12 +120,38 @@
                 requestWindow = window.open(url, "", "width=1,height=1");
                 setTimeout(() => {  requestWindow.close(); }, 1000);
             }
+
+            function showHideAdvanced()
+            {
+                if(document.getElementById("webhookheader").style.display === "none")
+                {
+                    document.getElementById("webhookheader").style.display = "block";
+                    document.getElementById("webhookcontent").style.display = "block";
+                    document.getElementById("requesttypes").style.display = "block";
+                    document.getElementById("webhookheaderlbl").style.display = "block";
+                    document.getElementById("webhookcontentlbl").style.display = "block";
+                    document.getElementById("requesttypeslbl").style.display = "block";
+                    document.getElementById("advtitle").style.display = "block";
+                    document.getElementById("advcapt").style.display = "block";
+                }
+                else
+                {
+                    document.getElementById("webhookheader").style.display = "none";
+                    document.getElementById("webhookcontent").style.display = "none";
+                    document.getElementById("requesttypes").style.display = "none";
+                    document.getElementById("webhookheaderlbl").style.display = "none";
+                    document.getElementById("webhookcontentlbl").style.display = "none";
+                    document.getElementById("requesttypeslbl").style.display = "none";
+                    document.getElementById("advtitle").style.display = "none";
+                    document.getElementById("advcapt").style.display = "none";
+                }
+            }
         </script>
     </head>
     <body onload="updateValues()">
         <div class="navbar">
-            <a href="https://github.com/AShifter/harmony-span"><h5 style="margin-bottom: 0px;">HarmonySpan Configuration Utility</h5></a>
-            <label type="text" for="version">HarmonySpan v1.3</label>
+            <a href="https://github.com/AShifter/harmony-span"><i><h5 style="margin-bottom: 0px;">HarmonySpan Configuration Utility</h5></i></a>
+            <label type="text" for="version">HarmonySpan v1.3.1</label>
             <label type="text" for="version">//</label>
             <label type="text" for="version">Built by Logan Lowe</label>
             <label type="text" for="version">//</label>
@@ -140,34 +182,22 @@
         </div>
         <div class="configpane">
             <label type="text" for="webhookname">Webhook Name</label>
-            <br>
             <input class="rounded" type="text" id="webhookname" size="75"></input>
-            <br>
-            <br>
             <label type="text" for="webhookurl">Webhook URL</label>
-            <br>
             <input class="rounded" type="text" id="webhookurl" size="75"></input>
-            <br>
-            <br>
-            <label type="text" for="webhookheader">Webhook Header</label>
-            <br>
-            <input class="rounded" type="text" id="webhookheader" size="75"></input>
-            <br>
-            <br>
-            <label type="text" for="webhookcontent">Webhook Content</label>
-            <br>
-            <input class="rounded" type="text" id="webhookcontent" size="75"></input>
-            <br>
-            <br>
-            <label type="select" for="requesttypes">Webhook Request Type</label>
-            <br>
-            <select name="requests" id="requesttypes" class="rounded">
+            <h3 id="advtitle" style="display:none;">Advanced Settings</h3>
+            <label id="advcapt" style="display:none;" type="text">You don't need these unless you know what you're doing. If you're just making an IFTTT webhook integration, don't change anything here.</label>
+            <label type="text" style="display:none; margin-top: 1.5%;" id="webhookheaderlbl" for="webhookheader">Webhook Header</label>
+            <input class="rounded" type="text" id="webhookheader" style="display:none" size="75"></input>
+            <label type="text" style="display:none; margin-top: 1.5%;" id="webhookcontentlbl" for="webhookcontent">Webhook Content</label>
+            <input class="rounded" type="text" id="webhookcontent" style="display:none" size="75"></input>
+            <label type="select" style="display:none; margin-top: 1.5%;" id="requesttypeslbl" for="requesttypes">Webhook Request Type</label>
+            <select name="requests" id="requesttypes" style="display:none" class="rounded">
                 <option value="POST">POST</option>
                 <option value="GET">GET</option>
             </select>
-            <br>
-            <br>
-            <input type="button" class="button" value="Submit Settings" onclick="submitButtons()"/>
+            <input type="button" class="button" style="margin-top: 1.5%;" value="Submit Settings" onclick="submitButtons()"/>
+            <input type="button" class="button" style="background-color:#FF6A00" value="Show / Hide Advanced Settings" onclick="showHideAdvanced()"/>
         </div>
     </body>
 </html>
