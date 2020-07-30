@@ -30,6 +30,8 @@ Navigate to the [HarmonySpan Configuration Utility page](http://localhost:8060/c
 
 For simple IFTTT webhooks, just paste the webhook URL in the URL field for each button you want to attach to a webhook, and press the Submit Settings button - HarmonySpan will automatically apply the new configuration without the need for a restart.
 
+To get IFTTT URLs and control your smart home devices, this video by Robert Cowan at https://youtu.be/XxH1q2Tcdis?t=573 (should begin at 9 minutes 33 seconds) will help you get started.
+
 In the Advanced Options menu (orange button), you can also add a body and header to the request if you want to talk directly to the API for things like LIFX bulbs. The ``query`` string is sent as the request body, and ``header`` as the request header. If you're not sure what this does, don't use it.
 
 At this point you can do whatever you want with the buttons - To make your lights turn on and off when you play and pause a movie, just add the HarmonySpan buttons that are linked to your 'lights on' and 'lights off' webhook URLs with the Pause and Play buttons on the activity you use to watch a movie. For more information, check Logitech's documentation on creating button sequences. https://support.myharmony.com/en-es/creating-button-sequences
