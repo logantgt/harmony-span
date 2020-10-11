@@ -1,5 +1,5 @@
 # HarmonySpan
-a Node.JS application that allows you to trigger webhooks directly from a Logitech Harmony Hub and compatible remote.
+a Node.JS application that allows you to trigger webhooks and issue MQTT-messages directly from a Logitech Harmony Hub and compatible remote.
 
 ## Quick Setup
 Have your Harmony Remote (or Hub), a MicroUSB cable, and the MyHarmony desktop software ready. **Compatibility issues are currently being investigated with the Mobile app. Your mileage may vary.**

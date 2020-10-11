@@ -1,204 +1,257 @@
 /// Import Modules ///
-const WebHooks = require('node-webhooks');
-const fs = require('fs');
-const Express = require('express');
+const WebHooks = require("node-webhooks");
+const fs = require("fs");
+const Express = require("express");
 const ssdp = require("./ssdp");
 const colorout = require("./coreoutput");
-const request = require('request');
+const request = require("request");
+const mqtt = require("mqtt");
+const yaml = require("node-yaml");
+const ip = require("ip");
 
-/// Initialize Stuff ///
-const app = Express();
+const CONFIG_FILE = "config.yaml";
+const DEFAULT_HOST = "127.0.0.1";
+const DEFAULT_PORT = 8060;
 
-webHooks = new WebHooks({db:{"": ["http://localhost:8060/"]}});
+let conf;
+let port;
+let host;
+let app;
+let server;
+let webHooks;
+let mqttClient;
+// Array of client's IP-addresses. Clients are Logitech Harmony Hubs
+let clients = [];
 
-var conf = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-
-var responses = [];
-
-webHooks.add('Home', conf.Buttons[0].url);
-webHooks.add('Rev', conf.Buttons[1].url);
-webHooks.add('Fwd', conf.Buttons[2].url);
-webHooks.add('Play', conf.Buttons[3].url);
-webHooks.add('Select', conf.Buttons[4].url);
-webHooks.add('Left', conf.Buttons[5].url);
-webHooks.add('Right', conf.Buttons[6].url);
-webHooks.add('Down', conf.Buttons[7].url);
-webHooks.add('Up', conf.Buttons[8].url);
-webHooks.add('Back', conf.Buttons[9].url);
-webHooks.add('InstantReplay', conf.Buttons[10].url);
-webHooks.add('Info', conf.Buttons[11].url);
-webHooks.add('Backspace', conf.Buttons[12].url);
-webHooks.add('Search', conf.Buttons[13].url);
-webHooks.add('Enter', conf.Buttons[14].url);
-
-request.shouldKeepAlive = false;
-
-ssdp.run();
-
-/// Send RootResponse.xml ///
-app.get('/', function (req, res)
-{
-    if(!responses.includes(req.ip))
-    {
-        responses.push(req.ip);
-        colorout.Log("info", req.ip + " found me! Sending RootResponse.xml..." );
+function init() {
+    conf = yaml.readSync(CONFIG_FILE);
+    if (conf.webserverConfig.hasOwnProperty("bindHost") && conf.webserverConfig.bindHost != "") {
+        host = conf.webserverConfig.bindHost;
+        if (host == "0.0.0.0") {
+            colorout.log("debug", "[Webserver] Binding to all available local IPs; one is " + ip.address());
+        } else {
+            colorout.log("debug", "[Webserver] Found webserver-host in config-file. Using " + host);
+        }
+    } else {
+        host = DEFAULT_HOST;
+        colorout.log("debug", "[Webserver]: Found no webserver-host in config-file. Falling back to " + host);
     }
-    res.type('application/xml');
-    res.send(fs.readFileSync('RootResponse.xml', 'utf8'));
-    res.end();
-})
 
-/// Webhook Trigger ///
-function triggerWebhook(btnName, btnID)
-{
-    colorout.Log("debug", "[HarmonySpan] got " + btnName + " (" + conf.Buttons[btnID].requesttype + ": " + conf.Buttons[btnID].label + ")");
-    if(conf.Buttons[btnID].requesttype == "POST")
-    {
-        webHooks.trigger(btnName, JSON.parse(conf.Buttons[btnID].query), JSON.parse(conf.Buttons[btnID].header));
+    if (conf.webserverConfig.hasOwnProperty("port") && conf.webserverConfig.port != "") {
+        port = conf.webserverConfig.port;
+        colorout.log("debug", "[Webserver] Found port in config-file. Using " + port);
+    } else {
+        port = DEFAULT_PORT;
+        colorout.log("debug", "[Webserver] Found no port in config-file. Falling back to " + port);
     }
-    else if(conf.Buttons[btnID].requesttype == "GET")
-    {
-        request(conf.Buttons[btnID].url, function (error, response, body)
-        {
-            if(error != null)
-            {
-                colorout.Log("error", "HTTP GET: " + response.statusCode + ", error: " + error);
-            }
-            else
-            {
-                colorout.Log("warning", "HTTP GET: " + response.statusCode);
-            }
-        });
+
+    app = Express();
+
+    webHooks = new WebHooks({ db: {} });
+
+    request.shouldKeepAlive = false;
+
+    attachWebhooks();
+
+    configureWebserverRoutes();
+
+    if (host == "0.0.0.0") {
+        ssdp.run("http://" + ip.address() + ":" + port + "/");
+    } else {
+        ssdp.run("http://" + host + ":" + port + "/");
+    }
+
+    process.on("SIGINT", () => {
+        colorout.log("info", "[Webserver] Shutting down");
+        server.close();
+        process.exit();
+    });
+
+    if (host == "0.0.0.0") {
+        // bind to all IPs.
+        server = app.listen(port);
+    } else {
+        server = app.listen(port, host);
+    }
+
+    let mqttConfig = conf.mqttConfig;
+    if (mqttConfig.hasOwnProperty("serverUrl") && mqttConfig.hasOwnProperty("serverUsername") && mqttConfig.hasOwnProperty("serverPassword") && mqttConfig.enabled == true) {
+        connectMqttServer();
+    }
+
+    if (host == "0.0.0.0") {
+        colorout.log("info", "[Webserver] Configuration Menu available at http://" + ip.address() + ":" + port + "/config/");
+    } else {
+        colorout.log("info", "[Webserver] Configuration Menu available at http://" + host + ":" + port + "/config/");
     }
 }
 
-/// Button Event Handlers ///
-app.post('/keypress/Home', function (req, res)
-{
-    triggerWebhook('Home', 0);
-    res.end();
-})
+function attachWebhooks() {
+    conf.buttons.forEach(function(button) {
+        webHooks.remove(button.name);
+        if (button.action == "POST") webHooks.add(button.name, button.url);
+    });
+}
 
-app.post('/keypress/Rev', function (req, res)
-{
-    triggerWebhook('Rev', 1);
-    res.end();
-})
+function connectMqttServer() {
+    // TODO check if client is connected
+    mqttClient = mqtt.connect(conf.mqttConfig.serverUrl, {
+        username: conf.mqttConfig.serverUsername,
+        password: conf.mqttConfig.serverPassword,
+        reconnectPeriod: 0,
+        connectTimeout: 5 * 1000
+    });
+    mqttClient.on("connect", function() {
+        colorout.log("debug", "[MQTT-Connection] connected to MQTT-server");
+    })
+    mqttClient.on("error", function() {
+        colorout.log("error", "[MQTT-Connection] could not connect to MQTT-server");
+    });
+}
 
-app.post('/keypress/Fwd', function (req, res)
-{
-    triggerWebhook('Fwd', 2);
-    res.end();
-})
+function configureWebserverRoutes() {
+    // server static content from public directory (http://.../config/*)
+    app.use(Express.static('public'));
+    // automatically interpret incoming post messages as JSON if Content-Type=application/json
+    app.use(Express.json());
 
-app.post('/keypress/Play', function (req, res)
-{
-    triggerWebhook('Play', 3);
-    res.end();
-})
+    // log all requests to debug
+    app.use((req, res, next) => {
+        colorout.log("debug", "[Webserver] " + req.method + " " + req.url + " from " + req.ip);
+        next();
+    });
 
-app.post('/keypress/Select', function (req, res)
-{
-    triggerWebhook('Select', 4);
-    res.end();
-})
+    /// Send RootResponse.xml ///
+    app.get('/', (req, res) => {
+        if (!clients.includes(req.ip)) {
+            clients.push(req.ip);
+            colorout.log("info", "[Webserver] Logitech Hub at " + req.ip + " found me! Sending RootResponse.xml...");
+        }
+        res.type('application/xml');
+        res.send(fs.readFileSync('RootResponse.xml', 'utf8'));
+        res.end();
+    });
 
-app.post('/keypress/Up', function (req, res)
-{
-    triggerWebhook('Up', 5);
-    res.end();
-})
+    /// Button Event Handler ///
+    app.post('/keypress/:action', function(req, res) {
+        triggerAction(req.params['action']);
+        res.end();
+    });
 
-app.post('/keypress/Down', function (req, res)
-{
-    triggerWebhook('Down', 6);
-    res.end();
-})
+    ///
+    /// HarmonySpan Configuration API
+    ///
 
-app.post('/keypress/Left', function (req, res)
-{
-    triggerWebhook('Left', 7);
-    res.end();
-})
+    // get all buttons config
+    app.get('/buttons/', function(req, res) {
+        if (!req.accepts('json')) {
+            res.sendStatus(415);
+        } else {
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(conf.buttons));
+        }
+    });
 
-app.post('/keypress/Right', function (req, res)
-{
-    triggerWebhook('Right', 8);
-    res.end();
-})
+    // get specific button config
+    app.get('/buttons/:id', function(req, res) {
+        if (!req.accepts('json')) {
+            res.sendStatus(415);
+        } else {
+            let id = req.params['id'];
+            if (!id.match(/[0-9]{1,2}/) || parseInt(id) < 0 || parseInt(id) > conf.buttons.length - 1) {
+                res.send(404);
+            } else {
+                res.set('Content-Type', 'application/json');
+                res.send(conf.buttons[id]);
+            }
+        }
+    });
 
-app.post('/keypress/Back', function (req, res)
-{
-    triggerWebhook('Back', 9);
-    res.end();
-})
+    // set specific button's config
+    app.put('/buttons/:id', function(req, res) {
+        // TODO validate
+        let data = req.body;
+        conf.buttons[data.id] = data;
+        res.sendStatus(204);
+        yaml.writeSync(CONFIG_FILE, conf);
+        attachWebhooks();
+        colorout.log("debug", "[Core] Updated config file.");
+    });
 
-app.post('/keypress/InstantReplay', function (req, res)
-{
-    triggerWebhook('InstantReplay', 10);
-    res.end();
-})
+    // get MQTT server config
+    app.get('/mqttconfig', function(req, res) {
+        res.contentType('application/json');
+        res.send(JSON.stringify(conf.mqttConfig));
+    });
 
-app.post('/keypress/Info', function (req, res)
-{
-    triggerWebhook('Info', 11);
-    res.end();
-})
+    // set MQTT server config
+    app.post('/mqttconfig', function(req, res) {
+        let data = req.body;
+        let enabledBefore = conf.mqttConfig.enabled;
+        let enabledAfter = data.enabled;
+        if (enabledBefore != enabledAfter) {
 
-app.post('/keypress/Backspace', function (req, res)
-{
-    triggerWebhook('Backspace', 12);
-    res.end();
-})
+        }
+        conf.mqttConfig = data;
+        yaml.writeSync(CONFIG_FILE, conf);
+        colorout.log("debug", "[Core] Updated config file.");
+        if (enabledBefore != enabledAfter) {
+            if (enabledAfter) {
+                connectMqttServer();
+            } else {
+                mqttClient.end();
+            }
+        }
+        res.sendStatus(204);
+    });
 
-app.post('/keypress/Search', function (req, res)
-{
-    triggerWebhook('Search', 13);
-    res.end();
-})
+    app.get('/mqttconnected', function(req, res) {
+        res.set("Content-Type", "application/json");
+        res.send("{\"connected\": " + mqttClient.connected + " }");
+    });
+}
 
-app.post('/keypress/Enter', function (req, res)
-{
-    triggerWebhook('Enter', 14);
-    res.end();
-})
+function triggerAction(buttonFunction) {
+    let buttonIndex = getButtonIndex(buttonFunction);
+    let button = conf.buttons[buttonIndex];
+    if (button.enabled) {
+        switch (button.action) {
+            case "GET":
+                request(button.url, function(error, response, body) {
+                    if (error != null) {
+                        colorout.log("error", "[Webserver] HTTP GET: error: " + error);
+                    } else {
+                        colorout.log("debug", "[Webserver] HTTP GET: " + response.statusCode);
+                    }
+                });
+                break;
+            case "POST":
+                webHooks.trigger(button.name, JSON.parse(button.postPayload), button.httpHeaders);
+                // console.log(JSON.parse(button.postPayload));
+                break;
+            case "MQTT":
+                if (mqttClient && mqttClient.connected) {
+                    mqttClient.publish(button.mqttTopic, button.mqttMessage);
+                    colorout.log("debug", "[MQTT-Connection] Sent mqtt message");
+                } else {
+                    // TODO try reconnect
+                    colorout.log("error", "[MQTT-Connection] MQTT not connected");
+                }
+                break;
+            default:
+                colorout.log("error", "[Core] Unknown action: " + button.action);
+        }
+    } else {
+        colorout.log("debug", "[Core] Button disabled. Won't fire action");
+    }
+}
 
-///
-/// HarmonySpan Configuration API
-///
+function getButtonIndex(btnFunction) {
+    let i;
+    for (i = 0; i < conf.buttons.length; i++) {
+        if (conf.buttons[i].name == btnFunction) return i;
+    }
+    return -1;
+}
 
-app.get('/config/config.json', function (req, res)
-{
-    res.sendFile(__dirname + '/config.json');
-})
-
-app.get('/config', function (req, res)
-{
-    res.sendFile(__dirname + '/config_utility/config.html');
-})
-
-app.get('/config/write/btn', function(req, res)
-{
-    colorout.Log("warning", "Writing to configuration NOW! \nButton: " + req.query.btn + "\nLabel: " + req.query.lbl + "\nURL: " + req.query.url + "\nRequest Type: " + req.query.rqt + "\nRequest Header: " + req.query.hdr + "\nRequest Query: " + req.query.qry);
-    conf.Buttons[req.query.btn].label = req.query.lbl;
-    conf.Buttons[req.query.btn].url = req.query.url;
-    conf.Buttons[req.query.btn].requesttype = req.query.rqt;
-    conf.Buttons[req.query.btn].header = req.query.hdr;
-    conf.Buttons[req.query.btn].query = req.query.qry;
-    fs.writeFileSync("config.json", JSON.stringify(conf));
-    res.status(200).end();
-})
-
-app.get('/config/write/ifttt', function(req, res)
-{
-    colorout.Log("warning", "Writing to configuration NOW! \nIFTTT URL: " + req.query.ifttt);
-    conf.maker_url = req.query.ifttt;
-    fs.writeFileSync("config.json", JSON.stringify(conf));
-    res.status(200).end();
-})
-
-var webserver = app.listen(8060, function ()
-{
-    var host = webserver.address().address
-    var port = webserver.address().port
-})
+init();

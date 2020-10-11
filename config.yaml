@@ -1,0 +1,96 @@
+webserverConfig:
+  bindHost: 0.0.0.0
+  port: 8060
+mqttConfig:
+  serverUrl: 'mqtt://localhost'
+  serverUsername: harmony
+  serverPassword: harmony
+  enabled: false
+buttons:
+  - id: 0
+    name: Home
+    action: GET
+    url: 'http://localhost:1880/harmony?cmd=home'
+    httpHeaders: {}
+    enabled: false
+  - id: 1
+    name: Rev
+    action: GET
+    url: 'http://localhost:1880/harmony?cmd=rev'
+    httpHeaders: {}
+    enabled: false
+  - id: 2
+    name: Fwd
+    url: 'http://localhost:1880/harmony?cmd=fwd'
+    action: GET
+    enabled: false
+  - id: 3
+    name: Play
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{ "cmd": "play" }'
+    enabled: false
+  - id: 4
+    name: Select
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{ "cmd": "select" }'
+    enabled: false
+  - id: 5
+    name: Left
+    action: POST
+    url: 'http://localhost:1880/harmony'
+    httpHeaders:
+      Content-Type: application/json
+    enabled: false
+    postPayload: '{"cmd": "left"}'
+  - id: 6
+    name: Right
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{"cmd": "right"}'
+    enabled: false
+  - id: 7
+    name: Down
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{"cmd" : "down"}'
+    enabled: false
+  - id: 8
+    name: Up
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{"cmd" : "up"}'
+    enabled: false
+  - id: 9
+    name: Back
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{"cmd" : "back"}'
+    enabled: false
+  - id: 10
+    name: InstantReplay
+    action: MQTT
+    mqttTopic: harmony
+    mqttMessage: '{"cmd" : "instantReplay"}'
+    enabled: false
+  - id: 11
+    name: Info
+    action: GET
+    url: 'http://localhost:1880/harmony?cmd=info'
+    enabled: false
+  - id: 12
+    name: Backspace
+    action: GET
+    url: 'http://localhost:1880/harmony?cmd=backspace'
+    enabled: false
+  - id: 13
+    name: Search
+    action: GET
+    url: 'http://localhost:1880/harmony?cmd=search'
+    enabled: false
+  - id: 14
+    name: Enter
+    action: GET
+    url: 'http://localhost:1880/harmony?cmd=enter'
+    enabled: false
