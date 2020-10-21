@@ -1,0 +1,22 @@
+/* Show it is fixed to the top */
+body {
+    padding-top: 4.5rem;
+}
+
+table#buttonTable > tbody > tr > td:nth-child(3) {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+table#buttonTable > tbody > tr > td:nth-child(4) {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+tr.inactive td {
+    color: grey;
+}

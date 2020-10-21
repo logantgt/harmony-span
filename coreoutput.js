@@ -1,6 +1,6 @@
 const colors = require("colors/safe")
 
-module.exports.Log = async (status, message) =>
+module.exports.log = async (status, message) =>
 {
   switch(status.toLowerCase())
   {
