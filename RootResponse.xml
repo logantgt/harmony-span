@@ -4,9 +4,9 @@
 <root xmlns="urn:schemas-upnp-org:device-1-0">
 <device>
     <friendlyName>Webhook Bridge</friendlyName>
-    <manufacturer>Logan Lowe</manufacturer>
+    <manufacturer>Roku</manufacturer>
     <manufacturerURL>http://www.github.com/ashifter/harmony-span/</manufacturerURL>
-    <modelName>HarmonySpan</modelName>
+    <modelName>Streaming Stick+</modelName>
     <serialNumber>HARMONY-FREEDOM</serialNumber>
     <UDN>uuid:00000000-1337-0000-1337-000000000000</UDN>
     </device>
