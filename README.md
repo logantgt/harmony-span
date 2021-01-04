@@ -49,11 +49,3 @@ https://www.youtube.com/watch?v=W59Ae5jUl2w
 
 Build Montage // DIM & BRIGHTEN Your Cinema Lights With PAUSE & PLAY In Your Home Theater!
 https://www.youtube.com/watch?v=Gqjma5_ZAYo
-
-## Have you found HarmonySpan useful?
-
-Go ahead and buy me a coffee;
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A61WGUQ)
-
-Thanks for your support!
