@@ -8,6 +8,7 @@ const request = require("request");
 const mqtt = require("mqtt");
 const yaml = require("node-yaml");
 const ip = require("ip");
+const { exec } = require("child_process");
 
 const CONFIG_FILE = "config.yaml";
 const DEFAULT_HOST = "127.0.0.1";
@@ -216,6 +217,28 @@ function triggerAction(buttonFunction) {
     let button = conf.buttons[buttonIndex];
     if (button.enabled) {
         switch (button.action) {
+            case "SCRIPT":
+            // check if script file exists
+            if (fs.existsSync(button.scriptLocation)) {
+                // file exists, so try to run it
+                colorout.log("debug", "Running script file: " + button.scriptLocation);
+                exec(button.scriptLocation, (error, stdout, stderr) => {
+                        if (error){
+                            colorout.log("error", "Error running script file " + button.scriptLocation + ". Error Message:\n" + error.message);
+                            return;
+                        }
+                        if (stderr){
+                            colorout.log("error", "Error running script file " + button.scriptLocation + ". STDERR:\n" + stderr);
+                            return;
+                        }
+                        colorout.log("debug", "Output of script file " + button.scriptLocation + ":\n" + stdout);
+                    });
+                }
+                else{
+                    // file doesn't exist
+                    colorout.log("error", "Script file " + button.scriptLocation + " doesn't exist.")
+                }
+            	break;            
             case "GET":
                 request(button.url, function(error, response, body) {
                     if (error != null) {
