@@ -8,7 +8,8 @@ var Button = Backbone.Model.extend({
         mqttTopic: "",
         mqttMessage: "",
         action: "",
-        enabled: false
+        enabled: false,
+        scriptLocation: ""
     }
 });
 
@@ -40,6 +41,10 @@ var ButtonRowView = Backbone.View.extend({
         "<% if (action == \"MQTT\") { %>" +
         "<td><code>[<strong><%= action %></strong>] <%= mqttTopic %></code></td>\n" +
         "<td><%= mqttMessage %></td>\n" +
+        "<% } %>" +
+        "<% if (action == \"SCRIPT\") { %>" +
+        "<td><code>[<strong><%= action %></strong>] <%= scriptLocation %></code></td>\n" +
+        "<td><%= scriptLocation %></td>\n" +
         "<% } %>" +
         "<td><%= enabled ? \"yes\" : \"no\" %></td>\n" +
         "<td><a href=\"#button/<%= id %>\" class=\"edit btn btn-sm btn-primary\">edit</a></td>"
@@ -112,6 +117,7 @@ var ButtonConfigView = Backbone.View.extend({
         "<div class=\"form-group\">\n" +
         "<label for=\"action\">Action</label>\n" +
         "<select class=\"select-action form-control\" id=\"action\">\n" +
+        "<option value=\"SCRIPT\"<% if(mode == \"SCRIPT\") { %> selected<% } %>>Run script at given location</option>\n" +
         "<option value=\"GET\"<% if(mode == \"GET\") { %> selected<% } %>>Call Webhook with HTTP GET</option>\n" +
         "<option value=\"POST\"<% if(mode == \"POST\") { %> selected<% } %>>Call Webhook with HTTP POST</option>\n" +
         "<option value=\"MQTT\"<% if(mode == \"MQTT\") { %> selected<% } %>>Send MQTT Message</option>\n" +
@@ -135,11 +141,16 @@ var ButtonConfigView = Backbone.View.extend({
         "<% } else if (mode == \"MQTT\") { %>" +
         "<div class=\"form-group\">\n" +
         "<label for=\"mqttTopic\">MQTT Topic</label>\n" +
-        "<input type=\"text\" class=\"form-control\" id=\"mqttTopic\" value=\"<%= mqttTopic %>\" placeholder=\"E.g. harmony\" requird>\n" +
+        "<input type=\"text\" class=\"form-control\" id=\"mqttTopic\" value=\"<%= mqttTopic %>\" placeholder=\"E.g. harmony\" required>\n" +
         "</div>\n" +
         "<div class=\"form-group\">\n" +
         "<label for=\"mqttTopic\">MQTT Message</label>\n" +
         "<textarea class=\"form-control\" id=\"mqttMessage\" required><%= mqttMessage %></textarea>\n" +
+        "</div>\n" +
+        "<% } else if (mode == \"SCRIPT\") { %>" +
+        "<div class=\"form-group\">\n" +
+        "<label for=\"scriptLocation\">Script Location</label>\n" +
+        "<input type=\"text\" class=\"form-control\" id=\"scriptLocation\" value=\"<%= scriptLocation %>\" placeholder=\"E.g. ./scripts/DisneyPlus.sh\" required>\n" +
         "</div>\n" +
         "<% } %>" +
         "<div class=\"form-group form-check\">\n" +
@@ -199,6 +210,15 @@ var ButtonConfigView = Backbone.View.extend({
                 action: action,
                 mqttTopic: this.$el.find("#mqttTopic").val().trim(),
                 mqttMessage : this.$el.find("#mqttMessage").val().trim(),
+                enabled: enabled
+            });
+        } else if (action == "SCRIPT") {
+            this.model.clear();
+            this.model.set({
+                id: id,
+                name: name,
+                action: action,
+                scriptLocation: this.$el.find("#scriptLocation").val().trim(),
                 enabled: enabled
             });
         }
