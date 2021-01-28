@@ -36,7 +36,11 @@ In the Advanced Options menu (orange button), you can also add a body and header
 
 At this point you can do whatever you want with the buttons - To make your lights turn on and off when you play and pause a movie, just add the HarmonySpan buttons that are linked to your 'lights on' and 'lights off' webhook URLs with the Pause and Play buttons on the activity you use to watch a movie. For more information, check Logitech's documentation on creating button sequences. https://support.myharmony.com/en-es/creating-button-sequences
 
+To trigger a shell script, edit a button, choose SCRIPT from the dropdown, enter the location of your script and check Enabled. You will need to ensure file permissions are appropriately set to allow Harmony Span to execute your scripts.
+
 Click the Submit Settings button once you fill in all of the fields for the button you're working with. Switching buttons without submitting your changes will delete the new values you put in for the first button.
+
+
 
 ## How It Works
 Logitech allows you to control 'IP devices' over your local network (think Roku, NVIDIA SHIELD, Apple TV) rather than controlling them with IR. This works because each device broadcasts to a local Simple Service Discovery Protocol (SSDP) IP (``239.255.255.250``, chances are you can see traffic on it in your network with Wireshark) to let other devices in the network know that they can be controlled.
