@@ -9,7 +9,7 @@ const mqtt = require("mqtt");
 const yaml = require("node-yaml");
 const ip = require("ip");
 
-const CONFIG_FILE = "config.yaml";
+const CONFIG_FILE = "../res/config.yaml";
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_PORT = 8060;
 
@@ -20,6 +20,7 @@ let app;
 let server;
 let webHooks;
 let mqttClient;
+
 // Array of client's IP-addresses. Clients are Logitech Harmony Hubs
 let clients = [];
 
@@ -111,7 +112,7 @@ function connectMqttServer() {
 
 function configureWebserverRoutes() {
     // server static content from public directory (http://.../config/*)
-    app.use(Express.static('public'));
+    app.use(Express.static('res/web'));
     // automatically interpret incoming post messages as JSON if Content-Type=application/json
     app.use(Express.json());
 
@@ -128,7 +129,7 @@ function configureWebserverRoutes() {
             colorout.log("info", "[Webserver] Logitech Hub at " + req.ip + " found me! Sending RootResponse.xml...");
         }
         res.type('application/xml');
-        res.send(fs.readFileSync('RootResponse.xml', 'utf8'));
+        res.send(fs.readFileSync('res/RootResponse.xml', 'utf8'));
         res.end();
     });
 

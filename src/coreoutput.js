@@ -24,5 +24,3 @@ module.exports.log = async (status, message) =>
       break;
   }
 }
-
-// for any of you that know me personally, yes, this is a waterbot module

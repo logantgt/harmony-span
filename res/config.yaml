@@ -1,0 +1,99 @@
+webserverConfig:
+  bindHost: 0.0.0.0
+  port: 8060
+mqttConfig:
+  serverUrl: 'mqtt://localhost'
+  serverUsername: harmony
+  serverPassword: harmony
+  enabled: false
+buttons:
+  - id: 0
+    name: Home
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 1
+    name: Rev
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 2
+    name: Fwd
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 3
+    name: Play
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 4
+    name: Select
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 5
+    name: Left
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 6
+    name: Right
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 7
+    name: Down
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 8
+    name: Up
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 9
+    name: Back
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 10
+    name: InstantReplay
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 11
+    name: Info
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 12
+    name: Backspace
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 13
+    name: Search
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false
+  - id: 14
+    name: Enter
+    action: GET
+    url: 'https://www.example.com'
+    httpHeaders: {}
+    enabled: false

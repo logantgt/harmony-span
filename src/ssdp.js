@@ -10,7 +10,7 @@ module.exports.run = async(httpServerUrl) => {
 
     ssdp.addUSN("roku:ecp");
     ssdp.start();
-    colorout.log("success", "[SSDP-Server] running and bound to all available network-interfaces");
+    colorout.log("success", "[SSDP-Server] running and bound to all available network interfaces");
 
     process.on('SIGINT', function() {
         colorout.log("info", "[SSDP-Server] Shutting down SSDP server.");
