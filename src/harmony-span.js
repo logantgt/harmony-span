@@ -112,7 +112,7 @@ function connectMqttServer() {
 
 function configureWebserverRoutes() {
     // server static content from public directory (http://.../config/*)
-    app.use(Express.static('res/web'));
+    app.use(Express.static('res/public'));
     // automatically interpret incoming post messages as JSON if Content-Type=application/json
     app.use(Express.json());
 
