@@ -1,3 +1,8 @@
+# NOTE
+**All current harmony-span users are highly encouraged to migrate to [EcpEmuServer](https://github.com/AShifter/EcpEmuServer) as it reaches feature parity with harmony-span, as it offers the same basic functionality with many benefits.**
+
+harmony-span has not been maintained for a very long time and has several drawbacks that were mainly the result of poor design and framework choice. Trust me, EcpEmuServer is probably what you're looking for.
+
 # HarmonySpan
 a Node.JS application that allows you to trigger webhooks and issue MQTT-messages directly from a Logitech Harmony Hub and compatible remote.
 
